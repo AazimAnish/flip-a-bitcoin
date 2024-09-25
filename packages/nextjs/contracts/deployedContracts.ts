@@ -4,6 +4,374 @@
  */
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
-const deployedContracts = {} as const;
+const deployedContracts = {
+  31337: {
+    YourContract: {
+      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "vrfCoordinatorV2",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "gasLane",
+              type: "bytes32",
+            },
+            {
+              internalType: "uint256",
+              name: "subscriptionId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint32",
+              name: "callbackGasLimit",
+              type: "uint32",
+            },
+            {
+              internalType: "uint256",
+              name: "_minBetAmount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "_maxPayoutPercentage",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "have",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "want",
+              type: "address",
+            },
+          ],
+          name: "OnlyCoordinatorCanFulfill",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+          ],
+          name: "OwnableInvalidOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "OwnableUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "requestId",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "betAmount",
+              type: "uint256",
+            },
+          ],
+          name: "CoinFlipRequested",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "requestId",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "player",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "bool",
+              name: "won",
+              type: "bool",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "payout",
+              type: "uint256",
+            },
+          ],
+          name: "CoinFlipResult",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "OwnershipTransferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "TreasuryFunded",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "TreasuryWithdrawn",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "PERCENTAGE_BASE",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "betAndFlipCoin",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "betAmount",
+              type: "uint256",
+            },
+          ],
+          name: "calculatePayout",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "fundTreasury",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "maxPayoutPercentage",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "minBetAmount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "requestId",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256[]",
+              name: "randomWords",
+              type: "uint256[]",
+            },
+          ],
+          name: "rawFulfillRandomWords",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_maxPayoutPercentage",
+              type: "uint256",
+            },
+          ],
+          name: "setMaxPayoutPercentage",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_minBetAmount",
+              type: "uint256",
+            },
+          ],
+          name: "setMinBetAmount",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address",
+            },
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "treasuryBalance",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "withdrawTreasury",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          stateMutability: "payable",
+          type: "receive",
+        },
+      ],
+      inheritedFunctions: {
+        rawFulfillRandomWords: "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol",
+        owner: "@openzeppelin/contracts/access/Ownable.sol",
+        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
+      },
+    },
+  },
+} as const;
 
 export default deployedContracts satisfies GenericContractsDeclaration;

@@ -1,87 +1,121 @@
-//SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "hardhat/console.sol";
+import "@chainlink/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-// Use openzeppelin to inherit battle-tested implementations (ERC20, ERC721, etc)
-// import "@openzeppelin/contracts/access/Ownable.sol";
+contract YourContract is VRFConsumerBaseV2, Ownable {
+    VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
+    bytes32 private immutable i_gasLane;
+    uint256 private immutable i_subscriptionId;
+    uint32 private immutable i_callbackGasLimit;
+    uint16 private constant REQUEST_CONFIRMATIONS = 3;
+    uint32 private constant NUM_WORDS = 1;
 
-/**
- * A smart contract that allows changing a state variable of the contract and tracking the changes
- * It also allows the owner to withdraw the Ether in the contract
- * @author BuidlGuidl
- */
-contract YourContract {
-	// State Variables
-	address public immutable owner;
-	string public greeting = "Building Unstoppable Apps!!!";
-	bool public premium = false;
-	uint256 public totalCounter = 0;
-	mapping(address => uint) public userGreetingCounter;
+    uint256 public treasuryBalance;
+    uint256 public minBetAmount;
+    uint256 public maxPayoutPercentage;
+    uint256 public constant PERCENTAGE_BASE = 10000; // 100.00%
 
-	// Events: a way to emit log statements from smart contract that can be listened to by external parties
-	event GreetingChange(
-		address indexed greetingSetter,
-		string newGreeting,
-		bool premium,
-		uint256 value
-	);
+    mapping(uint256 => address) private s_requestIdToPlayer;
+    mapping(uint256 => uint256) private s_requestIdToBetAmount;
 
-	// Constructor: Called once on contract deployment
-	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
-	constructor(address _owner) {
-		owner = _owner;
-	}
+    event CoinFlipRequested(uint256 indexed requestId, address indexed player, uint256 betAmount);
+    event CoinFlipResult(uint256 indexed requestId, address indexed player, bool won, uint256 payout);
+    event TreasuryFunded(uint256 amount);
+    event TreasuryWithdrawn(uint256 amount);
 
-	// Modifier: used to define a set of rules that must be met before or after a function is executed
-	// Check the withdraw() function
-	modifier isOwner() {
-		// msg.sender: predefined variable that represents address of the account that called the current function
-		require(msg.sender == owner, "Not the Owner");
-		_;
-	}
+    constructor(
+        address vrfCoordinatorV2,
+        bytes32 gasLane,
+        uint256 subscriptionId,
+        uint32 callbackGasLimit,
+        uint256 _minBetAmount,
+        uint256 _maxPayoutPercentage
+    ) VRFConsumerBaseV2(vrfCoordinatorV2) Ownable(msg.sender) {
+        i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
+        i_gasLane = gasLane;
+        i_subscriptionId = subscriptionId;
+        i_callbackGasLimit = callbackGasLimit;
+        minBetAmount = _minBetAmount;
+        maxPayoutPercentage = _maxPayoutPercentage;
+    }
 
-	/**
-	 * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-	 *
-	 * @param _newGreeting (string memory) - new greeting to save on the contract
-	 */
-	function setGreeting(string memory _newGreeting) public payable {
-		// Print data to the hardhat chain console. Remove when deploying to a live network.
-		console.log(
-			"Setting new greeting '%s' from %s",
-			_newGreeting,
-			msg.sender
-		);
+    function betAndFlipCoin() external payable {
+        require(msg.value >= minBetAmount, "Bet amount too low");
+        require(treasuryBalance + msg.value >= treasuryBalance, "Treasury overflow");
 
-		// Change state variables
-		greeting = _newGreeting;
-		totalCounter += 1;
-		userGreetingCounter[msg.sender] += 1;
+        treasuryBalance += msg.value;
 
-		// msg.value: built-in global variable that represents the amount of ether sent with the transaction
-		if (msg.value > 0) {
-			premium = true;
-		} else {
-			premium = false;
-		}
+        uint256 requestId = i_vrfCoordinator.requestRandomWords(
+            i_gasLane,
+            uint64(i_subscriptionId), // Cast to uint64 for VRF Coordinator
+            REQUEST_CONFIRMATIONS,
+            i_callbackGasLimit,
+            NUM_WORDS
+        );
 
-		// emit: keyword used to trigger an event
-		emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
-	}
+        s_requestIdToPlayer[requestId] = msg.sender;
+        s_requestIdToBetAmount[requestId] = msg.value;
 
-	/**
-	 * Function that allows the owner to withdraw all the Ether in the contract
-	 * The function can only be called by the owner of the contract as defined by the isOwner modifier
-	 */
-	function withdraw() public isOwner {
-		(bool success, ) = owner.call{ value: address(this).balance }("");
-		require(success, "Failed to send Ether");
-	}
+        emit CoinFlipRequested(requestId, msg.sender, msg.value);
+    }
 
-	/**
-	 * Function that allows the contract to receive ETH
-	 */
-	receive() external payable {}
+    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+        address player = s_requestIdToPlayer[requestId];
+        uint256 betAmount = s_requestIdToBetAmount[requestId];
+        bool won = randomWords[0] % 2 == 0;
+
+        if (won) {
+            uint256 payout = calculatePayout(betAmount);
+            require(treasuryBalance >= payout, "Insufficient treasury funds");
+            treasuryBalance -= payout;
+            (bool success, ) = player.call{value: payout}("");
+            require(success, "Transfer failed");
+            emit CoinFlipResult(requestId, player, true, payout);
+        } else {
+            emit CoinFlipResult(requestId, player, false, 0);
+        }
+
+        delete s_requestIdToPlayer[requestId];
+        delete s_requestIdToBetAmount[requestId];
+    }
+
+    function calculatePayout(uint256 betAmount) public view returns (uint256) {
+        uint256 payoutPercentage = (treasuryBalance * PERCENTAGE_BASE) / (betAmount * 100);
+        payoutPercentage = payoutPercentage > maxPayoutPercentage ? maxPayoutPercentage : payoutPercentage;
+        return betAmount + (betAmount * payoutPercentage) / PERCENTAGE_BASE;
+    }
+
+    function fundTreasury() public payable onlyOwner {
+        _fundTreasury(msg.value);
+    }
+
+    function _fundTreasury(uint256 amount) internal {
+        require(treasuryBalance + amount >= treasuryBalance, "Treasury overflow");
+        treasuryBalance += amount;
+        emit TreasuryFunded(amount);
+    }
+
+    function withdrawTreasury(uint256 amount) external onlyOwner {
+        require(amount <= treasuryBalance, "Insufficient treasury funds");
+        treasuryBalance -= amount;
+        (bool success, ) = owner().call{value: amount}("");
+        require(success, "Transfer failed");
+        emit TreasuryWithdrawn(amount);
+    }
+
+    function setMinBetAmount(uint256 _minBetAmount) external onlyOwner {
+        minBetAmount = _minBetAmount;
+    }
+
+    function setMaxPayoutPercentage(uint256 _maxPayoutPercentage) external onlyOwner {
+        require(_maxPayoutPercentage <= PERCENTAGE_BASE, "Invalid percentage");
+        maxPayoutPercentage = _maxPayoutPercentage;
+    }
+
+    receive() external payable {
+        _fundTreasury(msg.value);
+    }
 }

@@ -1,44 +1,33 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
+import { Contract, parseEther } from "ethers";
 
-/**
- * Deploys a contract named "YourContract" using the deployer account and
- * constructor arguments set to the deployer address
- *
- * @param hre HardhatRuntimeEnvironment object.
- */
 const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  /*
-    On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
-
-    When deploying to live networks (e.g `yarn deploy --network sepolia`), the deployer account
-    should have sufficient balance to pay for the gas fees for contract creation.
-
-    You can generate a random account with `yarn generate` which will fill DEPLOYER_PRIVATE_KEY
-    with a random private key in the .env file (then used on hardhat.config.ts)
-    You can run the `yarn account` command to check your balance in every network.
-  */
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
+  // You'll need to set these values appropriately for your network
+  const vrfCoordinatorV2 = "0x343300b5d84d444b2adc9116fef1bed02be49cf2"; // Example for Sepolia
+  const gasLane = "0x816bedba8a50b294e5cbd47842baf240c2385f2eaf719edbd4f250a137a8c899"; // Example for Sepolia
+  const subscriptionId = "5478683274065929883482628998599168422859348416206994309691431616408174057992"; // You need to create this
+  const callbackGasLimit = 100000; // Example value, adjust as needed
+  const minBetAmount = parseEther("0.01"); // Example: 0.01 ETH
+  const maxPayoutPercentage = 5000; // Example: 50% (remember, it's based on PERCENTAGE_BASE = 10000)
+
   await deploy("YourContract", {
     from: deployer,
-    // Contract constructor arguments
-    args: [deployer],
+    args: [vrfCoordinatorV2, gasLane, subscriptionId, callbackGasLimit, minBetAmount, maxPayoutPercentage],
     log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  // Get the deployed contract to interact with it after deploying.
   const yourContract = await hre.ethers.getContract<Contract>("YourContract", deployer);
-  console.log("👋 Initial greeting:", await yourContract.greeting());
+
+  // Log initial state
+  console.log("📊 Initial min bet amount:", await yourContract.minBetAmount());
+  console.log("💰 Initial treasury balance:", await yourContract.treasuryBalance());
 };
 
 export default deployYourContract;
 
-// Tags are useful if you have multiple deploy files and only want to run one of them.
-// e.g. yarn deploy --tags YourContract
 deployYourContract.tags = ["YourContract"];
