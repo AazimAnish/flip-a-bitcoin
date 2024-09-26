@@ -1,0 +1,528 @@
+{
+  "address": "0xFc103FAB326cf2940B2405D4872f52bc1aF287fc",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vrfCoordinatorV2",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "gasLane",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint32",
+          "name": "callbackGasLimit",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minBetAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_maxPayoutPercentage",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "have",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "want",
+          "type": "address"
+        }
+      ],
+      "name": "OnlyCoordinatorCanFulfill",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableInvalidOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "OwnableUnauthorizedAccount",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "betAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "CoinFlipRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "player",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "won",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "payout",
+          "type": "uint256"
+        }
+      ],
+      "name": "CoinFlipResult",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "TreasuryFunded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "TreasuryWithdrawn",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "PERCENTAGE_BASE",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "betAndFlipCoin",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "betAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculatePayout",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "fundTreasury",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxPayoutPercentage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "minBetAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "requestId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "randomWords",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "rawFulfillRandomWords",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_maxPayoutPercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "setMaxPayoutPercentage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_minBetAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "setMinBetAmount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "treasuryBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawTreasury",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0x13fbbd521072ad40e67ae97e99bfa2528a9e07d8bc20a5d7d1eada1c2965d1b5",
+  "receipt": {
+    "to": null,
+    "from": "0x7306C43CC6Abe3FE55c0fb4073E3f1Ec23127B1B",
+    "contractAddress": "0xFc103FAB326cf2940B2405D4872f52bc1aF287fc",
+    "transactionIndex": 0,
+    "gasUsed": "841980",
+    "logsBloom": "0x00000000080000000000000000000000000000000000000000800000000000000000000000000000000000000000000000008000000000000000000000000000000000080000000000000000000000800001000000000000000100000000000000000000020000000004000000000800000000000000004080000000000000400000000000000000000000000000000002000200000000000000000000000000200000000000000000000000000000000000000000000000000000000000004020000000000000000001000000000000000000010000000000100000000020000000000000000000000000000000000000004000000000000000000000100000",
+    "blockHash": "0xfc1e2e545fd4fb6821e92b7a26cefeb3ceaa6f5f46c01b2e6ba3bfea7332a2a3",
+    "transactionHash": "0x13fbbd521072ad40e67ae97e99bfa2528a9e07d8bc20a5d7d1eada1c2965d1b5",
+    "logs": [
+      {
+        "transactionIndex": 0,
+        "blockNumber": 12440269,
+        "transactionHash": "0x13fbbd521072ad40e67ae97e99bfa2528a9e07d8bc20a5d7d1eada1c2965d1b5",
+        "address": "0xFc103FAB326cf2940B2405D4872f52bc1aF287fc",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000007306c43cc6abe3fe55c0fb4073e3f1ec23127b1b"
+        ],
+        "data": "0x",
+        "logIndex": 0,
+        "blockHash": "0xfc1e2e545fd4fb6821e92b7a26cefeb3ceaa6f5f46c01b2e6ba3bfea7332a2a3"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 12440269,
+        "transactionHash": "0x13fbbd521072ad40e67ae97e99bfa2528a9e07d8bc20a5d7d1eada1c2965d1b5",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x0000000000000000000000007306c43cc6abe3fe55c0fb4073e3f1ec23127b1b",
+          "0x0000000000000000000000006ab3d36c46ecfb9b9c0bd51cb1c3da5a2c81cea6"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000006fe00911e9ba780000000000000000000000000000000000000000000000000dc93ef0831005800000000000000000000000000000000000000000000002e0a5635b4f885db09d0000000000000000000000000000000000000000000000000d595ee771264b080000000000000000000000000000000000000000000002e0a5d33b589a476b15",
+        "logIndex": 1,
+        "blockHash": "0xfc1e2e545fd4fb6821e92b7a26cefeb3ceaa6f5f46c01b2e6ba3bfea7332a2a3"
+      }
+    ],
+    "blockNumber": 12440269,
+    "cumulativeGasUsed": "841980",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x343300b5d84d444b2adc9116fef1bed02be49cf2",
+    "0x816bedba8a50b294e5cbd47842baf240c2385f2eaf719edbd4f250a137a8c899",
+    "5478683274065929883482628998599168422859348416206994309691431616408174057992",
+    100000,
+    "10000000000000000",
+    5000
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "b0ad9aeaaed2449f004bd28b7b9584c7",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"vrfCoordinatorV2\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"gasLane\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"callbackGasLimit\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"_minBetAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_maxPayoutPercentage\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"have\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"want\",\"type\":\"address\"}],\"name\":\"OnlyCoordinatorCanFulfill\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"betAmount\",\"type\":\"uint256\"}],\"name\":\"CoinFlipRequested\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"won\",\"type\":\"bool\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"payout\",\"type\":\"uint256\"}],\"name\":\"CoinFlipResult\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TreasuryFunded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TreasuryWithdrawn\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"PERCENTAGE_BASE\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"betAndFlipCoin\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"betAmount\",\"type\":\"uint256\"}],\"name\":\"calculatePayout\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"fundTreasury\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"maxPayoutPercentage\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minBetAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"requestId\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"randomWords\",\"type\":\"uint256[]\"}],\"name\":\"rawFulfillRandomWords\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_maxPayoutPercentage\",\"type\":\"uint256\"}],\"name\":\"setMaxPayoutPercentage\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_minBetAmount\",\"type\":\"uint256\"}],\"name\":\"setMinBetAmount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"treasuryBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawTreasury\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"errors\":{\"OwnableInvalidOwner(address)\":[{\"details\":\"The owner is not a valid owner account. (eg. `address(0)`)\"}],\"OwnableUnauthorizedAccount(address)\":[{\"details\":\"The caller account is not authorized to perform an operation.\"}]},\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/YourContract.sol\":\"YourContract\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\n/** ****************************************************************************\\n * @notice Interface for contracts using VRF randomness\\n * *****************************************************************************\\n * @dev PURPOSE\\n *\\n * @dev Reggie the Random Oracle (not his real job) wants to provide randomness\\n * @dev to Vera the verifier in such a way that Vera can be sure he's not\\n * @dev making his output up to suit himself. Reggie provides Vera a public key\\n * @dev to which he knows the secret key. Each time Vera provides a seed to\\n * @dev Reggie, he gives back a value which is computed completely\\n * @dev deterministically from the seed and the secret key.\\n *\\n * @dev Reggie provides a proof by which Vera can verify that the output was\\n * @dev correctly computed once Reggie tells it to her, but without that proof,\\n * @dev the output is indistinguishable to her from a uniform random sample\\n * @dev from the output space.\\n *\\n * @dev The purpose of this contract is to make it easy for unrelated contracts\\n * @dev to talk to Vera the verifier about the work Reggie is doing, to provide\\n * @dev simple access to a verifiable source of randomness. It ensures 2 things:\\n * @dev 1. The fulfillment came from the VRFCoordinator\\n * @dev 2. The consumer contract implements fulfillRandomWords.\\n * *****************************************************************************\\n * @dev USAGE\\n *\\n * @dev Calling contracts must inherit from VRFConsumerBase, and can\\n * @dev initialize VRFConsumerBase's attributes in their constructor as\\n * @dev shown:\\n *\\n * @dev   contract VRFConsumer {\\n * @dev     constructor(<other arguments>, address _vrfCoordinator, address _link)\\n * @dev       VRFConsumerBase(_vrfCoordinator) public {\\n * @dev         <initialization with other arguments goes here>\\n * @dev       }\\n * @dev   }\\n *\\n * @dev The oracle will have given you an ID for the VRF keypair they have\\n * @dev committed to (let's call it keyHash). Create subscription, fund it\\n * @dev and your consumer contract as a consumer of it (see VRFCoordinatorInterface\\n * @dev subscription management functions).\\n * @dev Call requestRandomWords(keyHash, subId, minimumRequestConfirmations,\\n * @dev callbackGasLimit, numWords),\\n * @dev see (VRFCoordinatorInterface for a description of the arguments).\\n *\\n * @dev Once the VRFCoordinator has received and validated the oracle's response\\n * @dev to your request, it will call your contract's fulfillRandomWords method.\\n *\\n * @dev The randomness argument to fulfillRandomWords is a set of random words\\n * @dev generated from your requestId and the blockHash of the request.\\n *\\n * @dev If your contract could have concurrent requests open, you can use the\\n * @dev requestId returned from requestRandomWords to track which response is associated\\n * @dev with which randomness request.\\n * @dev See \\\"SECURITY CONSIDERATIONS\\\" for principles to keep in mind,\\n * @dev if your contract could have multiple requests in flight simultaneously.\\n *\\n * @dev Colliding `requestId`s are cryptographically impossible as long as seeds\\n * @dev differ.\\n *\\n * *****************************************************************************\\n * @dev SECURITY CONSIDERATIONS\\n *\\n * @dev A method with the ability to call your fulfillRandomness method directly\\n * @dev could spoof a VRF response with any random value, so it's critical that\\n * @dev it cannot be directly called by anything other than this base contract\\n * @dev (specifically, by the VRFConsumerBase.rawFulfillRandomness method).\\n *\\n * @dev For your users to trust that your contract's random behavior is free\\n * @dev from malicious interference, it's best if you can write it so that all\\n * @dev behaviors implied by a VRF response are executed *during* your\\n * @dev fulfillRandomness method. If your contract must store the response (or\\n * @dev anything derived from it) and use it later, you must ensure that any\\n * @dev user-significant behavior which depends on that stored value cannot be\\n * @dev manipulated by a subsequent VRF request.\\n *\\n * @dev Similarly, both miners and the VRF oracle itself have some influence\\n * @dev over the order in which VRF responses appear on the blockchain, so if\\n * @dev your contract could have multiple VRF requests in flight simultaneously,\\n * @dev you must ensure that the order in which the VRF responses arrive cannot\\n * @dev be used to manipulate your contract's user-significant behavior.\\n *\\n * @dev Since the block hash of the block which contains the requestRandomness\\n * @dev call is mixed into the input to the VRF *last*, a sufficiently powerful\\n * @dev miner could, in principle, fork the blockchain to evict the block\\n * @dev containing the request, forcing the request to be included in a\\n * @dev different block with a different hash, and therefore a different input\\n * @dev to the VRF. However, such an attack would incur a substantial economic\\n * @dev cost. This cost scales with the number of blocks the VRF oracle waits\\n * @dev until it calls responds to a request. It is for this reason that\\n * @dev that you can signal to an oracle you'd like them to wait longer before\\n * @dev responding to the request (however this is not enforced in the contract\\n * @dev and so remains effective only in the case of unmodified oracle software).\\n */\\nabstract contract VRFConsumerBaseV2 {\\n  error OnlyCoordinatorCanFulfill(address have, address want);\\n  // solhint-disable-next-line chainlink-solidity/prefix-immutable-variables-with-i\\n  address private immutable vrfCoordinator;\\n\\n  /**\\n   * @param _vrfCoordinator address of VRFCoordinator contract\\n   */\\n  constructor(address _vrfCoordinator) {\\n    vrfCoordinator = _vrfCoordinator;\\n  }\\n\\n  /**\\n   * @notice fulfillRandomness handles the VRF response. Your contract must\\n   * @notice implement it. See \\\"SECURITY CONSIDERATIONS\\\" above for important\\n   * @notice principles to keep in mind when implementing your fulfillRandomness\\n   * @notice method.\\n   *\\n   * @dev VRFConsumerBaseV2 expects its subcontracts to have a method with this\\n   * @dev signature, and will call it once it has verified the proof\\n   * @dev associated with the randomness. (It is triggered via a call to\\n   * @dev rawFulfillRandomness, below.)\\n   *\\n   * @param requestId The Id initially returned by requestRandomness\\n   * @param randomWords the VRF output expanded to the requested number of words\\n   */\\n  // solhint-disable-next-line chainlink-solidity/prefix-internal-functions-with-underscore\\n  function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal virtual;\\n\\n  // rawFulfillRandomness is called by VRFCoordinator when it receives a valid VRF\\n  // proof. rawFulfillRandomness then calls fulfillRandomness, after validating\\n  // the origin of the call\\n  function rawFulfillRandomWords(uint256 requestId, uint256[] memory randomWords) external {\\n    if (msg.sender != vrfCoordinator) {\\n      revert OnlyCoordinatorCanFulfill(msg.sender, vrfCoordinator);\\n    }\\n    fulfillRandomWords(requestId, randomWords);\\n  }\\n}\\n\",\"keccak256\":\"0x5a502a5ce16796565815b295bb2d18a0d26d6f23621f733918c971047c6091d7\",\"license\":\"MIT\"},\"@chainlink/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n// solhint-disable-next-line interface-starts-with-i\\ninterface VRFCoordinatorV2Interface {\\n  /**\\n   * @notice Get configuration relevant for making requests\\n   * @return minimumRequestConfirmations global min for request confirmations\\n   * @return maxGasLimit global max for request gas limit\\n   * @return s_provingKeyHashes list of registered key hashes\\n   */\\n  function getRequestConfig() external view returns (uint16, uint32, bytes32[] memory);\\n\\n  /**\\n   * @notice Request a set of random words.\\n   * @param keyHash - Corresponds to a particular oracle job which uses\\n   * that key for generating the VRF proof. Different keyHash's have different gas price\\n   * ceilings, so you can select a specific one to bound your maximum per request cost.\\n   * @param subId  - The ID of the VRF subscription. Must be funded\\n   * with the minimum subscription balance required for the selected keyHash.\\n   * @param minimumRequestConfirmations - How many blocks you'd like the\\n   * oracle to wait before responding to the request. See SECURITY CONSIDERATIONS\\n   * for why you may want to request more. The acceptable range is\\n   * [minimumRequestBlockConfirmations, 200].\\n   * @param callbackGasLimit - How much gas you'd like to receive in your\\n   * fulfillRandomWords callback. Note that gasleft() inside fulfillRandomWords\\n   * may be slightly less than this amount because of gas used calling the function\\n   * (argument decoding etc.), so you may need to request slightly more than you expect\\n   * to have inside fulfillRandomWords. The acceptable range is\\n   * [0, maxGasLimit]\\n   * @param numWords - The number of uint256 random values you'd like to receive\\n   * in your fulfillRandomWords callback. Note these numbers are expanded in a\\n   * secure way by the VRFCoordinator from a single random value supplied by the oracle.\\n   * @return requestId - A unique identifier of the request. Can be used to match\\n   * a request to a response in fulfillRandomWords.\\n   */\\n  function requestRandomWords(\\n    bytes32 keyHash,\\n    uint64 subId,\\n    uint16 minimumRequestConfirmations,\\n    uint32 callbackGasLimit,\\n    uint32 numWords\\n  ) external returns (uint256 requestId);\\n\\n  /**\\n   * @notice Create a VRF subscription.\\n   * @return subId - A unique subscription id.\\n   * @dev You can manage the consumer set dynamically with addConsumer/removeConsumer.\\n   * @dev Note to fund the subscription, use transferAndCall. For example\\n   * @dev  LINKTOKEN.transferAndCall(\\n   * @dev    address(COORDINATOR),\\n   * @dev    amount,\\n   * @dev    abi.encode(subId));\\n   */\\n  function createSubscription() external returns (uint64 subId);\\n\\n  /**\\n   * @notice Get a VRF subscription.\\n   * @param subId - ID of the subscription\\n   * @return balance - LINK balance of the subscription in juels.\\n   * @return reqCount - number of requests for this subscription, determines fee tier.\\n   * @return owner - owner of the subscription.\\n   * @return consumers - list of consumer address which are able to use this subscription.\\n   */\\n  function getSubscription(\\n    uint64 subId\\n  ) external view returns (uint96 balance, uint64 reqCount, address owner, address[] memory consumers);\\n\\n  /**\\n   * @notice Request subscription owner transfer.\\n   * @param subId - ID of the subscription\\n   * @param newOwner - proposed new owner of the subscription\\n   */\\n  function requestSubscriptionOwnerTransfer(uint64 subId, address newOwner) external;\\n\\n  /**\\n   * @notice Request subscription owner transfer.\\n   * @param subId - ID of the subscription\\n   * @dev will revert if original owner of subId has\\n   * not requested that msg.sender become the new owner.\\n   */\\n  function acceptSubscriptionOwnerTransfer(uint64 subId) external;\\n\\n  /**\\n   * @notice Add a consumer to a VRF subscription.\\n   * @param subId - ID of the subscription\\n   * @param consumer - New consumer which can use the subscription\\n   */\\n  function addConsumer(uint64 subId, address consumer) external;\\n\\n  /**\\n   * @notice Remove a consumer from a VRF subscription.\\n   * @param subId - ID of the subscription\\n   * @param consumer - Consumer to remove from the subscription\\n   */\\n  function removeConsumer(uint64 subId, address consumer) external;\\n\\n  /**\\n   * @notice Cancel a subscription\\n   * @param subId - ID of the subscription\\n   * @param to - Where to send the remaining LINK to\\n   */\\n  function cancelSubscription(uint64 subId, address to) external;\\n\\n  /*\\n   * @notice Check to see if there exists a request commitment consumers\\n   * for all consumers and keyhashes for a given sub.\\n   * @param subId - ID of the subscription\\n   * @return true if there exists at least one unfulfilled request for the subscription, false\\n   * otherwise.\\n   */\\n  function pendingRequestExists(uint64 subId) external view returns (bool);\\n}\\n\",\"keccak256\":\"0x619d9d975540d65ef8d6332a67cbd0dda5b0f95b120b8da56695ed50c2f9fc30\",\"license\":\"MIT\"},\"@openzeppelin/contracts/access/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\\n\\npragma solidity ^0.8.20;\\n\\nimport {Context} from \\\"../utils/Context.sol\\\";\\n\\n/**\\n * @dev Contract module which provides a basic access control mechanism, where\\n * there is an account (an owner) that can be granted exclusive access to\\n * specific functions.\\n *\\n * The initial owner is set to the address provided by the deployer. This can\\n * later be changed with {transferOwnership}.\\n *\\n * This module is used through inheritance. It will make available the modifier\\n * `onlyOwner`, which can be applied to your functions to restrict their use to\\n * the owner.\\n */\\nabstract contract Ownable is Context {\\n    address private _owner;\\n\\n    /**\\n     * @dev The caller account is not authorized to perform an operation.\\n     */\\n    error OwnableUnauthorizedAccount(address account);\\n\\n    /**\\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\\n     */\\n    error OwnableInvalidOwner(address owner);\\n\\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\\n\\n    /**\\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\\n     */\\n    constructor(address initialOwner) {\\n        if (initialOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(initialOwner);\\n    }\\n\\n    /**\\n     * @dev Throws if called by any account other than the owner.\\n     */\\n    modifier onlyOwner() {\\n        _checkOwner();\\n        _;\\n    }\\n\\n    /**\\n     * @dev Returns the address of the current owner.\\n     */\\n    function owner() public view virtual returns (address) {\\n        return _owner;\\n    }\\n\\n    /**\\n     * @dev Throws if the sender is not the owner.\\n     */\\n    function _checkOwner() internal view virtual {\\n        if (owner() != _msgSender()) {\\n            revert OwnableUnauthorizedAccount(_msgSender());\\n        }\\n    }\\n\\n    /**\\n     * @dev Leaves the contract without owner. It will not be possible to call\\n     * `onlyOwner` functions. Can only be called by the current owner.\\n     *\\n     * NOTE: Renouncing ownership will leave the contract without an owner,\\n     * thereby disabling any functionality that is only available to the owner.\\n     */\\n    function renounceOwnership() public virtual onlyOwner {\\n        _transferOwnership(address(0));\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Can only be called by the current owner.\\n     */\\n    function transferOwnership(address newOwner) public virtual onlyOwner {\\n        if (newOwner == address(0)) {\\n            revert OwnableInvalidOwner(address(0));\\n        }\\n        _transferOwnership(newOwner);\\n    }\\n\\n    /**\\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\\n     * Internal function without access restriction.\\n     */\\n    function _transferOwnership(address newOwner) internal virtual {\\n        address oldOwner = _owner;\\n        _owner = newOwner;\\n        emit OwnershipTransferred(oldOwner, newOwner);\\n    }\\n}\\n\",\"keccak256\":\"0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb\",\"license\":\"MIT\"},\"@openzeppelin/contracts/utils/Context.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\\n\\npragma solidity ^0.8.20;\\n\\n/**\\n * @dev Provides information about the current execution context, including the\\n * sender of the transaction and its data. While these are generally available\\n * via msg.sender and msg.data, they should not be accessed in such a direct\\n * manner, since when dealing with meta-transactions the account sending and\\n * paying for execution may not be the actual sender (as far as an application\\n * is concerned).\\n *\\n * This contract is only required for intermediate, library-like contracts.\\n */\\nabstract contract Context {\\n    function _msgSender() internal view virtual returns (address) {\\n        return msg.sender;\\n    }\\n\\n    function _msgData() internal view virtual returns (bytes calldata) {\\n        return msg.data;\\n    }\\n\\n    function _contextSuffixLength() internal view virtual returns (uint256) {\\n        return 0;\\n    }\\n}\\n\",\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\"},\"contracts/YourContract.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.20;\\n\\nimport \\\"@chainlink/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol\\\";\\nimport \\\"@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol\\\";\\nimport \\\"@openzeppelin/contracts/access/Ownable.sol\\\";\\n\\ncontract YourContract is VRFConsumerBaseV2, Ownable {\\n    VRFCoordinatorV2Interface private immutable i_vrfCoordinator;\\n    bytes32 private immutable i_gasLane;\\n    uint256 private immutable i_subscriptionId;\\n    uint32 private immutable i_callbackGasLimit;\\n    uint16 private constant REQUEST_CONFIRMATIONS = 3;\\n    uint32 private constant NUM_WORDS = 1;\\n\\n    uint256 public treasuryBalance;\\n    uint256 public minBetAmount;\\n    uint256 public maxPayoutPercentage;\\n    uint256 public constant PERCENTAGE_BASE = 10000; // 100.00%\\n\\n    mapping(uint256 => address) private s_requestIdToPlayer;\\n    mapping(uint256 => uint256) private s_requestIdToBetAmount;\\n\\n    event CoinFlipRequested(uint256 indexed requestId, address indexed player, uint256 betAmount);\\n    event CoinFlipResult(uint256 indexed requestId, address indexed player, bool won, uint256 payout);\\n    event TreasuryFunded(uint256 amount);\\n    event TreasuryWithdrawn(uint256 amount);\\n\\n    constructor(\\n        address vrfCoordinatorV2,\\n        bytes32 gasLane,\\n        uint256 subscriptionId,\\n        uint32 callbackGasLimit,\\n        uint256 _minBetAmount,\\n        uint256 _maxPayoutPercentage\\n    ) VRFConsumerBaseV2(vrfCoordinatorV2) Ownable(msg.sender) {\\n        i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);\\n        i_gasLane = gasLane;\\n        i_subscriptionId = subscriptionId;\\n        i_callbackGasLimit = callbackGasLimit;\\n        minBetAmount = _minBetAmount;\\n        maxPayoutPercentage = _maxPayoutPercentage;\\n    }\\n\\n    function betAndFlipCoin() external payable {\\n        require(msg.value >= minBetAmount, \\\"Bet amount too low\\\");\\n        require(treasuryBalance + msg.value >= treasuryBalance, \\\"Treasury overflow\\\");\\n\\n        treasuryBalance += msg.value;\\n\\n        uint256 requestId = i_vrfCoordinator.requestRandomWords(\\n            i_gasLane,\\n            uint64(i_subscriptionId), // Cast to uint64 for VRF Coordinator\\n            REQUEST_CONFIRMATIONS,\\n            i_callbackGasLimit,\\n            NUM_WORDS\\n        );\\n\\n        s_requestIdToPlayer[requestId] = msg.sender;\\n        s_requestIdToBetAmount[requestId] = msg.value;\\n\\n        emit CoinFlipRequested(requestId, msg.sender, msg.value);\\n    }\\n\\n    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {\\n        address player = s_requestIdToPlayer[requestId];\\n        uint256 betAmount = s_requestIdToBetAmount[requestId];\\n        bool won = randomWords[0] % 2 == 0;\\n\\n        if (won) {\\n            uint256 payout = calculatePayout(betAmount);\\n            require(treasuryBalance >= payout, \\\"Insufficient treasury funds\\\");\\n            treasuryBalance -= payout;\\n            (bool success, ) = player.call{value: payout}(\\\"\\\");\\n            require(success, \\\"Transfer failed\\\");\\n            emit CoinFlipResult(requestId, player, true, payout);\\n        } else {\\n            emit CoinFlipResult(requestId, player, false, 0);\\n        }\\n\\n        delete s_requestIdToPlayer[requestId];\\n        delete s_requestIdToBetAmount[requestId];\\n    }\\n\\n    function calculatePayout(uint256 betAmount) public view returns (uint256) {\\n        uint256 payoutPercentage = (treasuryBalance * PERCENTAGE_BASE) / (betAmount * 100);\\n        payoutPercentage = payoutPercentage > maxPayoutPercentage ? maxPayoutPercentage : payoutPercentage;\\n        return betAmount + (betAmount * payoutPercentage) / PERCENTAGE_BASE;\\n    }\\n\\n    function fundTreasury() public payable onlyOwner {\\n        _fundTreasury(msg.value);\\n    }\\n\\n    function _fundTreasury(uint256 amount) internal {\\n        require(treasuryBalance + amount >= treasuryBalance, \\\"Treasury overflow\\\");\\n        treasuryBalance += amount;\\n        emit TreasuryFunded(amount);\\n    }\\n\\n    function withdrawTreasury(uint256 amount) external onlyOwner {\\n        require(amount <= treasuryBalance, \\\"Insufficient treasury funds\\\");\\n        treasuryBalance -= amount;\\n        (bool success, ) = owner().call{value: amount}(\\\"\\\");\\n        require(success, \\\"Transfer failed\\\");\\n        emit TreasuryWithdrawn(amount);\\n    }\\n\\n    function setMinBetAmount(uint256 _minBetAmount) external onlyOwner {\\n        minBetAmount = _minBetAmount;\\n    }\\n\\n    function setMaxPayoutPercentage(uint256 _maxPayoutPercentage) external onlyOwner {\\n        require(_maxPayoutPercentage <= PERCENTAGE_BASE, \\\"Invalid percentage\\\");\\n        maxPayoutPercentage = _maxPayoutPercentage;\\n    }\\n\\n    receive() external payable {\\n        _fundTreasury(msg.value);\\n    }\\n}\",\"keccak256\":\"0xe337f79c1442518978aea2f812602d07738f525333af181755f2678ec2d5d53e\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x61012060405234801561001157600080fd5b50604051610e98380380610e98833981016040819052610030916100ec565b6001600160a01b038616608052338061006357604051631e4fbdf760e01b81526000600482015260240160405180910390fd5b61006c8161009c565b506001600160a01b0390951660a05260c09390935260e09190915263ffffffff1661010052600255600355610161565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b60008060008060008060c0878903121561010557600080fd5b86516001600160a01b038116811461011c57600080fd5b809650506020870151945060408701519350606087015163ffffffff8116811461014557600080fd5b809350506080870151915060a087015190509295509295509295565b60805160a05160c05160e05161010051610cec6101ac600039600061067a0152600061064701526000610618015260006106ab01526000818161045701526104990152610cec6000f3fe6080604052600436106100e15760003560e01c80638da5cb5b1161007f578063b9c1868511610059578063b9c1868514610210578063bdac18f114610218578063f2fde38b14610238578063fa968eea1461025857600080fd5b80638da5cb5b146101ca578063aaae0284146101f2578063af114dd51461020857600080fd5b80633bb91c77116100bb5780633bb91c771461015f5780636c1885931461017f578063715018a61461019f57806387c13943146101b457600080fd5b806311f1fc99146100f65780631fe543e314610116578063313dab201461013657600080fd5b366100f1576100ef3461026e565b005b600080fd5b34801561010257600080fd5b506100ef610111366004610ace565b61030f565b34801561012257600080fd5b506100ef610131366004610afd565b61044c565b34801561014257600080fd5b5061014c60015481565b6040519081526020015b60405180910390f35b34801561016b57600080fd5b5061014c61017a366004610ace565b6104d4565b34801561018b57600080fd5b506100ef61019a366004610ace565b61053b565b3480156101ab57600080fd5b506100ef610548565b3480156101c057600080fd5b5061014c61271081565b3480156101d657600080fd5b506000546040516001600160a01b039091168152602001610156565b3480156101fe57600080fd5b5061014c60035481565b6100ef61055c565b6100ef61078b565b34801561022457600080fd5b506100ef610233366004610ace565b61079c565b34801561024457600080fd5b506100ef610253366004610bc7565b6107f0565b34801561026457600080fd5b5061014c60025481565b60015461027b8282610c06565b10156102c25760405162461bcd60e51b81526020600482015260116024820152705472656173757279206f766572666c6f7760781b60448201526064015b60405180910390fd5b80600160008282546102d49190610c06565b90915550506040518181527fef7aff843f3420b45d9d058ff62be0d87a95132dea4a67b18925283ba05647dc9060200160405180910390a150565b61031761082e565b6001548111156103695760405162461bcd60e51b815260206004820152601b60248201527f496e73756666696369656e742074726561737572792066756e6473000000000060448201526064016102b9565b806001600082825461037b9190610c1f565b9091555050600080546040516001600160a01b039091169083908381818185875af1925050503d80600081146103cd576040519150601f19603f3d011682016040523d82523d6000602084013e6103d2565b606091505b50509050806104155760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016102b9565b6040518281527fdcfb70a6f0f5eab41644ac0cde62fe5f51ce0bb0a53b88ea72c4b2b78ad887bc9060200160405180910390a15050565b336001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016146104c65760405163073e64fd60e21b81523360048201526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001660248201526044016102b9565b6104d0828261085b565b5050565b6000806104e2836064610c32565b6127106001546104f29190610c32565b6104fc9190610c5f565b9050600354811161050d5780610511565b6003545b90506127106105208285610c32565b61052a9190610c5f565b6105349084610c06565b9392505050565b61054361082e565b600255565b61055061082e565b61055a6000610a7e565b565b6002543410156105a35760405162461bcd60e51b815260206004820152601260248201527142657420616d6f756e7420746f6f206c6f7760701b60448201526064016102b9565b6001546105b03482610c06565b10156105f25760405162461bcd60e51b81526020600482015260116024820152705472656173757279206f766572666c6f7760781b60448201526064016102b9565b34600160008282546106049190610c06565b90915550506040516305d3b1d360e41b81527f0000000000000000000000000000000000000000000000000000000000000000600482015267ffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001660248201526003604482015263ffffffff7f0000000000000000000000000000000000000000000000000000000000000000166064820152600160848201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690635d3b1d309060a4016020604051808303816000875af11580156106fc573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107209190610c73565b600081815260046020908152604080832080546001600160a01b03191633908117909155600583529281902034908190559051908152929350909183917fa2fda052f98934967782931dbe3da985b2cd4b3cf1de37d7361ab6afe056a74c910160405180910390a350565b61079361082e565b61055a3461026e565b6107a461082e565b6127108111156107eb5760405162461bcd60e51b8152602060048201526012602482015271496e76616c69642070657263656e7461676560701b60448201526064016102b9565b600355565b6107f861082e565b6001600160a01b03811661082257604051631e4fbdf760e01b8152600060048201526024016102b9565b61082b81610a7e565b50565b6000546001600160a01b0316331461055a5760405163118cdaa760e01b81523360048201526024016102b9565b600082815260046020908152604080832054600590925282205483516001600160a01b039092169290916002908590839061089857610898610c8c565b60200260200101516108aa9190610ca2565b1590508015610a0a5760006108be836104d4565b90508060015410156109125760405162461bcd60e51b815260206004820152601b60248201527f496e73756666696369656e742074726561737572792066756e6473000000000060448201526064016102b9565b80600160008282546109249190610c1f565b90915550506040516000906001600160a01b0386169083908381818185875af1925050503d8060008114610974576040519150601f19603f3d011682016040523d82523d6000602084013e610979565b606091505b50509050806109bc5760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016102b9565b6040805160018152602081018490526001600160a01b0387169189917f60bb14e357a07d495cefbec9003f55c1840408bff66e4bb35047f5b9a56cf5dc910160405180910390a35050610a51565b60408051600080825260208201526001600160a01b0385169187917f60bb14e357a07d495cefbec9003f55c1840408bff66e4bb35047f5b9a56cf5dc910160405180910390a35b50505060009182525060046020908152604080832080546001600160a01b03191690556005909152812055565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600060208284031215610ae057600080fd5b5035919050565b634e487b7160e01b600052604160045260246000fd5b60008060408385031215610b1057600080fd5b8235915060208084013567ffffffffffffffff80821115610b3057600080fd5b818601915086601f830112610b4457600080fd5b813581811115610b5657610b56610ae7565b8060051b604051601f19603f83011681018181108582111715610b7b57610b7b610ae7565b604052918252848201925083810185019189831115610b9957600080fd5b938501935b82851015610bb757843584529385019392850192610b9e565b8096505050505050509250929050565b600060208284031215610bd957600080fd5b81356001600160a01b038116811461053457600080fd5b634e487b7160e01b600052601160045260246000fd5b80820180821115610c1957610c19610bf0565b92915050565b81810381811115610c1957610c19610bf0565b8082028115828204841417610c1957610c19610bf0565b634e487b7160e01b600052601260045260246000fd5b600082610c6e57610c6e610c49565b500490565b600060208284031215610c8557600080fd5b5051919050565b634e487b7160e01b600052603260045260246000fd5b600082610cb157610cb1610c49565b50069056fea264697066735822122023b9cfc4a0012c3267c92c8aeed6ef02b65624407558a7f3fd68e2680e9572b964736f6c63430008140033",
+  "deployedBytecode": "0x6080604052600436106100e15760003560e01c80638da5cb5b1161007f578063b9c1868511610059578063b9c1868514610210578063bdac18f114610218578063f2fde38b14610238578063fa968eea1461025857600080fd5b80638da5cb5b146101ca578063aaae0284146101f2578063af114dd51461020857600080fd5b80633bb91c77116100bb5780633bb91c771461015f5780636c1885931461017f578063715018a61461019f57806387c13943146101b457600080fd5b806311f1fc99146100f65780631fe543e314610116578063313dab201461013657600080fd5b366100f1576100ef3461026e565b005b600080fd5b34801561010257600080fd5b506100ef610111366004610ace565b61030f565b34801561012257600080fd5b506100ef610131366004610afd565b61044c565b34801561014257600080fd5b5061014c60015481565b6040519081526020015b60405180910390f35b34801561016b57600080fd5b5061014c61017a366004610ace565b6104d4565b34801561018b57600080fd5b506100ef61019a366004610ace565b61053b565b3480156101ab57600080fd5b506100ef610548565b3480156101c057600080fd5b5061014c61271081565b3480156101d657600080fd5b506000546040516001600160a01b039091168152602001610156565b3480156101fe57600080fd5b5061014c60035481565b6100ef61055c565b6100ef61078b565b34801561022457600080fd5b506100ef610233366004610ace565b61079c565b34801561024457600080fd5b506100ef610253366004610bc7565b6107f0565b34801561026457600080fd5b5061014c60025481565b60015461027b8282610c06565b10156102c25760405162461bcd60e51b81526020600482015260116024820152705472656173757279206f766572666c6f7760781b60448201526064015b60405180910390fd5b80600160008282546102d49190610c06565b90915550506040518181527fef7aff843f3420b45d9d058ff62be0d87a95132dea4a67b18925283ba05647dc9060200160405180910390a150565b61031761082e565b6001548111156103695760405162461bcd60e51b815260206004820152601b60248201527f496e73756666696369656e742074726561737572792066756e6473000000000060448201526064016102b9565b806001600082825461037b9190610c1f565b9091555050600080546040516001600160a01b039091169083908381818185875af1925050503d80600081146103cd576040519150601f19603f3d011682016040523d82523d6000602084013e6103d2565b606091505b50509050806104155760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016102b9565b6040518281527fdcfb70a6f0f5eab41644ac0cde62fe5f51ce0bb0a53b88ea72c4b2b78ad887bc9060200160405180910390a15050565b336001600160a01b037f000000000000000000000000000000000000000000000000000000000000000016146104c65760405163073e64fd60e21b81523360048201526001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001660248201526044016102b9565b6104d0828261085b565b5050565b6000806104e2836064610c32565b6127106001546104f29190610c32565b6104fc9190610c5f565b9050600354811161050d5780610511565b6003545b90506127106105208285610c32565b61052a9190610c5f565b6105349084610c06565b9392505050565b61054361082e565b600255565b61055061082e565b61055a6000610a7e565b565b6002543410156105a35760405162461bcd60e51b815260206004820152601260248201527142657420616d6f756e7420746f6f206c6f7760701b60448201526064016102b9565b6001546105b03482610c06565b10156105f25760405162461bcd60e51b81526020600482015260116024820152705472656173757279206f766572666c6f7760781b60448201526064016102b9565b34600160008282546106049190610c06565b90915550506040516305d3b1d360e41b81527f0000000000000000000000000000000000000000000000000000000000000000600482015267ffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001660248201526003604482015263ffffffff7f0000000000000000000000000000000000000000000000000000000000000000166064820152600160848201526000907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031690635d3b1d309060a4016020604051808303816000875af11580156106fc573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107209190610c73565b600081815260046020908152604080832080546001600160a01b03191633908117909155600583529281902034908190559051908152929350909183917fa2fda052f98934967782931dbe3da985b2cd4b3cf1de37d7361ab6afe056a74c910160405180910390a350565b61079361082e565b61055a3461026e565b6107a461082e565b6127108111156107eb5760405162461bcd60e51b8152602060048201526012602482015271496e76616c69642070657263656e7461676560701b60448201526064016102b9565b600355565b6107f861082e565b6001600160a01b03811661082257604051631e4fbdf760e01b8152600060048201526024016102b9565b61082b81610a7e565b50565b6000546001600160a01b0316331461055a5760405163118cdaa760e01b81523360048201526024016102b9565b600082815260046020908152604080832054600590925282205483516001600160a01b039092169290916002908590839061089857610898610c8c565b60200260200101516108aa9190610ca2565b1590508015610a0a5760006108be836104d4565b90508060015410156109125760405162461bcd60e51b815260206004820152601b60248201527f496e73756666696369656e742074726561737572792066756e6473000000000060448201526064016102b9565b80600160008282546109249190610c1f565b90915550506040516000906001600160a01b0386169083908381818185875af1925050503d8060008114610974576040519150601f19603f3d011682016040523d82523d6000602084013e610979565b606091505b50509050806109bc5760405162461bcd60e51b815260206004820152600f60248201526e151c985b9cd9995c8819985a5b1959608a1b60448201526064016102b9565b6040805160018152602081018490526001600160a01b0387169189917f60bb14e357a07d495cefbec9003f55c1840408bff66e4bb35047f5b9a56cf5dc910160405180910390a35050610a51565b60408051600080825260208201526001600160a01b0385169187917f60bb14e357a07d495cefbec9003f55c1840408bff66e4bb35047f5b9a56cf5dc910160405180910390a35b50505060009182525060046020908152604080832080546001600160a01b03191690556005909152812055565b600080546001600160a01b038381166001600160a01b0319831681178455604051919092169283917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e09190a35050565b600060208284031215610ae057600080fd5b5035919050565b634e487b7160e01b600052604160045260246000fd5b60008060408385031215610b1057600080fd5b8235915060208084013567ffffffffffffffff80821115610b3057600080fd5b818601915086601f830112610b4457600080fd5b813581811115610b5657610b56610ae7565b8060051b604051601f19603f83011681018181108582111715610b7b57610b7b610ae7565b604052918252848201925083810185019189831115610b9957600080fd5b938501935b82851015610bb757843584529385019392850192610b9e565b8096505050505050509250929050565b600060208284031215610bd957600080fd5b81356001600160a01b038116811461053457600080fd5b634e487b7160e01b600052601160045260246000fd5b80820180821115610c1957610c19610bf0565b92915050565b81810381811115610c1957610c19610bf0565b8082028115828204841417610c1957610c19610bf0565b634e487b7160e01b600052601260045260246000fd5b600082610c6e57610c6e610c49565b500490565b600060208284031215610c8557600080fd5b5051919050565b634e487b7160e01b600052603260045260246000fd5b600082610cb157610cb1610c49565b50069056fea264697066735822122023b9cfc4a0012c3267c92c8aeed6ef02b65624407558a7f3fd68e2680e9572b964736f6c63430008140033",
+  "devdoc": {
+    "errors": {
+      "OwnableInvalidOwner(address)": [
+        {
+          "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        }
+      ],
+      "OwnableUnauthorizedAccount(address)": [
+        {
+          "details": "The caller account is not authorized to perform an operation."
+        }
+      ]
+    },
+    "kind": "dev",
+    "methods": {
+      "owner()": {
+        "details": "Returns the address of the current owner."
+      },
+      "renounceOwnership()": {
+        "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+      },
+      "transferOwnership(address)": {
+        "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 162,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "_owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      },
+      {
+        "astId": 357,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "treasuryBalance",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 359,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "minBetAmount",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 361,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "maxPayoutPercentage",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 368,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "s_requestIdToPlayer",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_mapping(t_uint256,t_address)"
+      },
+      {
+        "astId": 372,
+        "contract": "contracts/YourContract.sol:YourContract",
+        "label": "s_requestIdToBetAmount",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_mapping(t_uint256,t_uint256)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_uint256,t_address)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => address)",
+        "numberOfBytes": "32",
+        "value": "t_address"
+      },
+      "t_mapping(t_uint256,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
